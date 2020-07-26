@@ -1,2 +1,0 @@
- AWS::EC2::Instance	mirai-EC2
-
