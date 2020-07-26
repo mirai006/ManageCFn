@@ -12,4 +12,4 @@ echo "`ngit commit`n"
 git commit -m "$args Commited at $DateTime"
 
 echo "`ngit push master`n"
-git 
+git push
