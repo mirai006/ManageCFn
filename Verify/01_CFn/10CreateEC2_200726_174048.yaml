@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  miraiEC2: 
+    Type: AWS::EC2::Instance
+    DeletionPolicy: Delete
+    Properties: 
+      BlockDeviceMappings: 
+        - DeviceName: /dev/xvda
+          Ebs: 
+            DeleteOnTermination: true
+            Encrypted: true
+            VolumeSize: 8
+            VolumeType: gp2
+      DisableApiTermination: false
+      EbsOptimized: true
+      ImageId: ami-06ad9296e6cf1e3cf
+      InstanceInitiatedShutdownBehavior: stop
+      InstanceType: t3.nano
+      KeyName: mirai-KeyPair
+      Monitoring: false
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: true
+          DeleteOnTermination: true
+          DeviceIndex: 0
+          GroupSet: 
+            - !ImportValue mirai-SecurityGroup-Bation
+          PrivateIpAddresses: 
+            - Primary: true
+              PrivateIpAddress: 10.0.0.5
+          SubnetId: !ImportValue mirai-Subnet-Public01
+      SourceDestCheck: true
+      Tags: 
+        - Key: Name
+          Value: mirai-EC2
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 10CreateEC2_200726_174048.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+        - Key: testkey
+          Value: testvalue
+      Tenancy: default
+
+
+Outputs:
+  ExportmiraiEC2: 
+    Value: !Ref miraiEC2
+    Export: 
+      Name: mirai-EC2
+    
+

@@ -1,0 +1,15 @@
+ AWS::EC2::VPC	mirai-VPC
+ AWS::EC2::InternetGateway	mirai-InternetGateway
+ AWS::EC2::DHCPOptions	mirai-HDCPOptions
+ AWS::EC2::Subnet	mirai-Subnet-Public01
+ AWS::EC2::Subnet	mirai-Subnet-Public02
+ AWS::EC2::Subnet	mirai-Subnet-Public03
+ AWS::EC2::Subnet	mirai-Subnet-Private01
+ AWS::EC2::Subnet	mirai-Subnet-Private02
+ AWS::EC2::Subnet	mirai-Subnet-Private03
+ AWS::EC2::RouteTable	mirai-RouteTable-Public
+ AWS::EC2::RouteTable	mirai-RouteTable-Private
+ AWS::EC2::SecurityGroup	mirai-SecurityGroup-Bation
+ AWS::EC2::SecurityGroup	mirai-SecurityGroup-Web
+ AWS::EC2::NetworkAcl	mirai-NetowrkAcl
+

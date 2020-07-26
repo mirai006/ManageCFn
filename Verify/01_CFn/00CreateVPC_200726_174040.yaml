@@ -1,0 +1,453 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+  miraiVPC: 
+    Type: AWS::EC2::VPC
+    DeletionPolicy: Delete
+    Properties: 
+      CidrBlock: 10.0.0.0/21
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags: 
+        - Key: Name
+          Value: mirai-VPC
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+
+  miraiInternetGateway: 
+    Type: AWS::EC2::InternetGateway
+    DeletionPolicy: Delete
+    Properties: 
+      Tags: 
+        - Key: Name
+          Value: mirai-InternetGateway
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+
+  vi: 
+    Type: AWS::EC2::VPCGatewayAttachment
+    DeletionPolicy: Delete
+    Properties: 
+      InternetGatewayId: !Ref miraiInternetGateway
+      VpcId: !Ref miraiVPC
+
+  miraiHDCPOptions: 
+    Type: AWS::EC2::DHCPOptions
+    DeletionPolicy: Delete
+    Properties: 
+      DomainName: ap-northeast-1.compute.internal
+      DomainNameServers: 
+        - AmazonProvidedDNS
+      Tags: 
+        - Key: Name
+          Value: mirai-HDCPOptions
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+
+  vd: 
+    Type: AWS::EC2::VPCDHCPOptionsAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      DhcpOptionsId: !Ref miraiHDCPOptions
+      VpcId: !Ref miraiVPC
+
+  miraiSubnetPublic01: 
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties: 
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.0.0/24
+      Tags: 
+        - Key: Name
+          Value: mirai-Subnet-Public01
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiSubnetPublic02: 
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties: 
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.1.0/24
+      Tags: 
+        - Key: Name
+          Value: mirai-Subnet-Public02
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiSubnetPublic03: 
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties: 
+      AvailabilityZone: ap-northeast-1d
+      CidrBlock: 10.0.2.0/24
+      Tags: 
+        - Key: Name
+          Value: mirai-Subnet-Public03
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiSubnetPrivate01: 
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties: 
+      AvailabilityZone: ap-northeast-1a
+      CidrBlock: 10.0.4.0/24
+      Tags: 
+        - Key: Name
+          Value: mirai-Subnet-Private01
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiSubnetPrivate02: 
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties: 
+      AvailabilityZone: ap-northeast-1c
+      CidrBlock: 10.0.5.0/24
+      Tags: 
+        - Key: Name
+          Value: mirai-Subnet-Private02
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiSubnetPrivate03: 
+    Type: AWS::EC2::Subnet
+    DeletionPolicy: Delete
+    Properties: 
+      AvailabilityZone: ap-northeast-1d
+      CidrBlock: 10.0.6.0/24
+      Tags: 
+        - Key: Name
+          Value: mirai-Subnet-Private03
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiRouteTablePublic: 
+    Type: AWS::EC2::RouteTable
+    DeletionPolicy: Delete
+    Properties: 
+      Tags: 
+        - Key: Name
+          Value: mirai-RouteTable-Public
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiRouteTablePrivate: 
+    Type: AWS::EC2::RouteTable
+    DeletionPolicy: Delete
+    Properties: 
+      Tags: 
+        - Key: Name
+          Value: mirai-RouteTable-Private
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiRouteTablePublicInternet: 
+    Type: AWS::EC2::Route
+    DeletionPolicy: Delete
+    Properties: 
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref miraiInternetGateway
+      RouteTableId: !Ref miraiRouteTablePublic
+
+  sr1: 
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      RouteTableId: !Ref miraiRouteTablePublic
+      SubnetId: !Ref miraiSubnetPublic01
+
+  sr2: 
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      RouteTableId: !Ref miraiRouteTablePublic
+      SubnetId: !Ref miraiSubnetPublic02
+
+  sr3: 
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      RouteTableId: !Ref miraiRouteTablePublic
+      SubnetId: !Ref miraiSubnetPublic03
+
+  sr4: 
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      RouteTableId: !Ref miraiRouteTablePrivate
+      SubnetId: !Ref miraiSubnetPrivate01
+
+  sr5: 
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      RouteTableId: !Ref miraiRouteTablePrivate
+      SubnetId: !Ref miraiSubnetPrivate02
+
+  sr6: 
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      RouteTableId: !Ref miraiRouteTablePrivate
+      SubnetId: !Ref miraiSubnetPrivate03
+
+  miraiSecurityGroupBation: 
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties: 
+      GroupDescription: mirai-SecurityGroup-Bation
+      GroupName: mirai-SecurityGroup-Bation
+      SecurityGroupIngress: 
+        - CidrIp: 219.196.206.40/32
+          Description: From Home SSH
+          FromPort: 22
+          IpProtocol: TCP
+          ToPort: 22
+      Tags: 
+        - Key: Name
+          Value: mirai-SecurityGroup-Bation
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiSecurityGroupWeb: 
+    Type: AWS::EC2::SecurityGroup
+    DeletionPolicy: Delete
+    Properties: 
+      GroupDescription: mirai-SecurityGroup-Web
+      GroupName: mirai-SecurityGroup-Web
+      SecurityGroupIngress: 
+        - Description: From mirai-SecurityGroup-Bation
+          IpProtocol: -1
+          SourceSecurityGroupId: !Ref miraiSecurityGroupBation
+      Tags: 
+        - Key: Name
+          Value: mirai-SecurityGroup-Web
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  SecurityGrooupIngress1: 
+    Type: AWS::EC2::SecurityGroupIngress
+    DeletionPolicy: Delete
+    Properties: 
+      Description: From mirai-SecurityGroup-Web
+      GroupId: !Ref miraiSecurityGroupWeb
+      IpProtocol: -1
+      SourceSecurityGroupId: !Ref miraiSecurityGroupWeb
+
+  miraiNetowrkAcl: 
+    Type: AWS::EC2::NetworkAcl
+    DeletionPolicy: Delete
+    Properties: 
+      Tags: 
+        - Key: Name
+          Value: mirai-NetowrkAcl
+        - Key: Tool Version
+          Value: Create Cloud Formation 2020/07/25
+        - Key: CloudFormation File
+          Value: 00CreateVPC_200726_174040.yaml
+        - Key: ResourceSpecificationVersion
+          Value: 16.1.0
+      VpcId: !Ref miraiVPC
+
+  miraiNetowrkAclEntry32766E: 
+    Type: AWS::EC2::NetworkAclEntry
+    DeletionPolicy: Delete
+    Properties: 
+      CidrBlock: 0.0.0.0/0
+      Egress: true
+      NetworkAclId: !Ref miraiNetowrkAcl
+      Protocol: -1
+      RuleAction: allow
+      RuleNumber: 32766
+
+  miraiNetowrkAclEntry32766I: 
+    Type: AWS::EC2::NetworkAclEntry
+    DeletionPolicy: Delete
+    Properties: 
+      CidrBlock: 0.0.0.0/0
+      Egress: false
+      NetworkAclId: !Ref miraiNetowrkAcl
+      Protocol: -1
+      RuleAction: allow
+      RuleNumber: 32766
+
+  snacl1: 
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      NetworkAclId: !Ref miraiNetowrkAcl
+      SubnetId: !Ref miraiSubnetPublic01
+
+  snacl2: 
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      NetworkAclId: !Ref miraiNetowrkAcl
+      SubnetId: !Ref miraiSubnetPublic02
+
+  snacl3: 
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      NetworkAclId: !Ref miraiNetowrkAcl
+      SubnetId: !Ref miraiSubnetPublic03
+
+  snacl4: 
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      NetworkAclId: !Ref miraiNetowrkAcl
+      SubnetId: !Ref miraiSubnetPrivate01
+
+  snacl5: 
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      NetworkAclId: !Ref miraiNetowrkAcl
+      SubnetId: !Ref miraiSubnetPrivate02
+
+  snacl6: 
+    Type: AWS::EC2::SubnetNetworkAclAssociation
+    DeletionPolicy: Delete
+    Properties: 
+      NetworkAclId: !Ref miraiNetowrkAcl
+      SubnetId: !Ref miraiSubnetPrivate03
+
+
+Outputs:
+  ExportmiraiVPC: 
+    Value: !Ref miraiVPC
+    Export: 
+      Name: mirai-VPC
+    
+  ExportmiraiInternetGateway: 
+    Value: !Ref miraiInternetGateway
+    Export: 
+      Name: mirai-InternetGateway
+    
+  ExportmiraiHDCPOptions: 
+    Value: !Ref miraiHDCPOptions
+    Export: 
+      Name: mirai-HDCPOptions
+    
+  ExportmiraiSubnetPublic01: 
+    Value: !Ref miraiSubnetPublic01
+    Export: 
+      Name: mirai-Subnet-Public01
+    
+  ExportmiraiSubnetPublic02: 
+    Value: !Ref miraiSubnetPublic02
+    Export: 
+      Name: mirai-Subnet-Public02
+    
+  ExportmiraiSubnetPublic03: 
+    Value: !Ref miraiSubnetPublic03
+    Export: 
+      Name: mirai-Subnet-Public03
+    
+  ExportmiraiSubnetPrivate01: 
+    Value: !Ref miraiSubnetPrivate01
+    Export: 
+      Name: mirai-Subnet-Private01
+    
+  ExportmiraiSubnetPrivate02: 
+    Value: !Ref miraiSubnetPrivate02
+    Export: 
+      Name: mirai-Subnet-Private02
+    
+  ExportmiraiSubnetPrivate03: 
+    Value: !Ref miraiSubnetPrivate03
+    Export: 
+      Name: mirai-Subnet-Private03
+    
+  ExportmiraiRouteTablePublic: 
+    Value: !Ref miraiRouteTablePublic
+    Export: 
+      Name: mirai-RouteTable-Public
+    
+  ExportmiraiRouteTablePrivate: 
+    Value: !Ref miraiRouteTablePrivate
+    Export: 
+      Name: mirai-RouteTable-Private
+    
+  ExportmiraiSecurityGroupBation: 
+    Value: !Ref miraiSecurityGroupBation
+    Export: 
+      Name: mirai-SecurityGroup-Bation
+    
+  ExportmiraiSecurityGroupWeb: 
+    Value: !Ref miraiSecurityGroupWeb
+    Export: 
+      Name: mirai-SecurityGroup-Web
+    
+  ExportmiraiNetowrkAcl: 
+    Value: !Ref miraiNetowrkAcl
+    Export: 
+      Name: mirai-NetowrkAcl
+    
+
