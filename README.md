@@ -1,6 +1,6 @@
 # mirai project
 
-## Making AWS Network Information
+## Manage CloudFormation Tool
 
 ## Commit 
 Execute commit.ps1 [Comments]
