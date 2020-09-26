@@ -258,9 +258,7 @@ Private Sub Set_ResoucesValues(ByVal SheetNo As Integer)
             
                 
                 If SatisfyingValue(SheetNo, CheckRow, ValuesColumn) Then
-                
-                
-                
+
                     If Worksheets(SheetNo).Cells(CheckRow, Parameter_Start_Column + Max_Indent).Value = "" Then
                     
                         Set_Value2Yaml SheetNo, CheckRow, ValuesColumn
@@ -286,6 +284,7 @@ Private Sub Set_ResoucesValues(ByVal SheetNo As Integer)
             End If
             
             If Is_Tags(SheetNo, CheckRow) Then
+                ' ここで書いちゃうとその後の指定で、文字列にしないといけないのに、!Refとなってしまう。考えること。
                 TagsTreatment SheetNo, CheckRow, ValuesColumn
             End If
         
@@ -510,6 +509,8 @@ Private Function GetValue(ByVal Value As String) As String
         CheckRow = CheckRow + 1
     
     Loop
+    
+    CheckRow = ResouceType_Start_Row
     
     Do While Worksheets("CreatingResource").Cells(CheckRow, ResouceType_Start_Column + 1).Value <> ""
     
